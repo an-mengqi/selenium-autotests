@@ -4,7 +4,6 @@ import pytest
 from selenium.webdriver.common.by import By
 
 
-@pytest.mark.skip
 def test_search(browser):
     """Check that a title 'Search' appears after clicking to the search button"""
     browser.find_element(By.XPATH,
@@ -13,7 +12,6 @@ def test_search(browser):
     text_search = browser.find_element(By.XPATH, "//div[@id='product-search']/div[@class='row']/div[@id='content']/h1")
     assert text_search.get_attribute("innerHTML") == "Search"
 
-@pytest.mark.skip
 def test_cart_empty(browser):
     """Check that the shopping cart is empty"""
     browser.find_element(By.XPATH,
@@ -24,7 +22,6 @@ def test_cart_empty(browser):
                          "ul[@class='dropdown-menu pull-right']/li/p[@class='text-center']")
     assert dropdown_menu.get_attribute("innerHTML") == "Your shopping cart is empty!"
 
-@pytest.mark.skip
 def test_add_to_wishlist(browser):
     """Check that the alert appears after adding an item to wishist"""
     browser.find_element(By.XPATH,
