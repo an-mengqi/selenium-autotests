@@ -1,55 +1,49 @@
 import pytest
 import time
 
-from selenium.webdriver.common.by import By
+from page_objects.AdminPage import AdminPage
+from page_objects.CatalogPage import CatalogPage
+from page_objects.ProductPage import ProductPage
 
 
 def test_open_product_card_page(browser):
     """Check that 'Product List' page opens"""
-    browser.find_element(By.NAME, "username").send_keys("user")
-    browser.find_element(By.NAME, "password").send_keys("bitnami")
-    browser.find_element(By.XPATH, "//*[@id='content']/div/div/div/div/div[2]/form/div[3]/button/i").click()
-    browser.find_element(By.ID, "menu-catalog").click()
+    AdminPage(browser).login("user", "bitnami")
+    CatalogPage(browser)._click_element(CatalogPage.CATALOG_MENU_OPTION)
     time.sleep(0.4)
-    browser.find_element(By.XPATH, "//*[@id='collapse1']/li[2]/a").click()
-    assert browser.find_element(By.XPATH, "//*[@id='content']/div[2]/div/div[2]/div/div[1]/h3").text == "Product List"
+    CatalogPage(browser)._click_element(CatalogPage.PRODUCTS_OPTION)
+    assert ProductPage(browser)._get_element_text(ProductPage.PRODUCT_LIST_TABLE_TITLE) == "Product List"
+
 
 def test_change_product_cards_alphabet_order(browser):
     """Check that products order changes by clicking to 'Product Name'"""
-    browser.find_element(By.NAME, "username").send_keys("user")
-    browser.find_element(By.NAME, "password").send_keys("bitnami")
-    browser.find_element(By.XPATH, "//*[@id='content']/div/div/div/div/div[2]/form/div[3]/button/i").click()
-    browser.find_element(By.ID, "menu-catalog").click()
+    AdminPage(browser).login("user", "bitnami")
+    CatalogPage(browser)._click_element(CatalogPage.CATALOG_MENU_OPTION)
     time.sleep(0.4)
-    browser.find_element(By.XPATH, "//*[@id='collapse1']/li[2]/a").click()
-    first_product = browser.find_element(By.XPATH, "//*[@id='form-product']/div/table/tbody/tr[1]/td[3]")
-    assert first_product.text == 'Apple Cinema 30"'
-    browser.find_element(By.XPATH, "//*[@id='form-product']/div/table/thead/tr/td[3]/a").click()
-    first_product = browser.find_element(By.XPATH, "//*[@id='form-product']/div/table/tbody/tr[1]/td[3]")
-    assert first_product.text == "Sony VAIO"
+    CatalogPage(browser)._click_element(CatalogPage.PRODUCTS_OPTION)
+    assert ProductPage(browser)._get_element_text(ProductPage.FIRST_PRODUCT_NAME_IN_TABLE) == 'Apple Cinema 30"'
+    ProductPage(browser)._click_element(ProductPage.PRODUCT_NAME_FILTER)
+    assert ProductPage(browser)._get_element_text(ProductPage.FIRST_PRODUCT_NAME_IN_TABLE) == "Sony VAIO"
+
 
 def test_edit_product_card(browser):
     """Check redirect to 'Edit Product' page"""
-    browser.find_element(By.NAME, "username").send_keys("user")
-    browser.find_element(By.NAME, "password").send_keys("bitnami")
-    browser.find_element(By.XPATH, "//*[@id='content']/div/div/div/div/div[2]/form/div[3]/button/i").click()
-    browser.find_element(By.ID, "menu-catalog").click()
+    AdminPage(browser).login("user", "bitnami")
+    CatalogPage(browser)._click_element(CatalogPage.CATALOG_MENU_OPTION)
     time.sleep(0.4)
-    browser.find_element(By.XPATH, "//*[@id='collapse1']/li[2]/a").click()
-    browser.find_element(By.XPATH, "//*[@id='form-product']/div/table/tbody/tr[1]/td[8]/a").click()
-    edit_product_title = browser.find_element(By.XPATH, "//*[@id='content']/div[2]/div/div[1]/h3")
-    assert edit_product_title.text == "Edit Product"
+    CatalogPage(browser)._click_element(CatalogPage.PRODUCTS_OPTION)
+    ProductPage(browser)._click_element(ProductPage.EDIT_BUTTON)
+    assert ProductPage(browser)._get_element_text(ProductPage.EDIT_PRODUCT_WINDOW_TITLE) == "Edit Product"
+
 
 @pytest.mark.parametrize("field_id", ["input-name", "input-model"])
 def test_negative_filter(browser, field_id):
     """Check filter work when no results were found"""
-    browser.find_element(By.NAME, "username").send_keys("user")
-    browser.find_element(By.NAME, "password").send_keys("bitnami")
-    browser.find_element(By.XPATH, "//*[@id='content']/div/div/div/div/div[2]/form/div[3]/button/i").click()
-    browser.find_element(By.ID, "menu-catalog").click()
+    AdminPage(browser).login("user", "bitnami")
+    CatalogPage(browser)._click_element(CatalogPage.CATALOG_MENU_OPTION)
     time.sleep(0.4)
-    browser.find_element(By.XPATH, "//*[@id='collapse1']/li[2]/a").click()
-    browser.find_element(By.ID, f"{field_id}").send_keys("nonsense")
-    browser.find_element(By.ID, "button-filter").click()
-    result_text = browser.find_element(By.XPATH, "//*[@id='form-product']/div/table/tbody/tr/td")
-    assert result_text.text == "No results!"
+    CatalogPage(browser)._click_element(CatalogPage.PRODUCTS_OPTION)
+    field = ProductPage(browser).get_filter_field_id(field_id)
+    ProductPage(browser)._find_element(field).send_keys("nonsense")
+    ProductPage(browser)._click_element(ProductPage.FILTER_BUTTON)
+    assert ProductPage(browser)._get_element_text(ProductPage.FILTER_RESULT_TEXT) == "No results!"
