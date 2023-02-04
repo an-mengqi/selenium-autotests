@@ -14,7 +14,8 @@ class RegisterPage(BasePage):
     PASSWORD_FIELD = (By.NAME, "password")
     CONFIRM_PASSWORD_FIELD = (By.NAME, "confirm")
     CONTINUE_BUTTON = (By.XPATH, "//*[@id='content']/form/div/div/input[2]")
-
+    PRIVACY_POLICY_CHECKBOX = (By.XPATH, "//*[@id='content']/form/div/div/input[1]")
+    REGISTER_SUCCESS_PAGE_TITLE = (By.XPATH, "//*[@id='content']/h1")
 
     def get_personal_details_fields_xpath(self, element_number):
         res = (By.XPATH, "//*[@id='account']/div[" + element_number + "]/label")

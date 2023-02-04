@@ -13,4 +13,8 @@ class MainPage(BasePage):
     SEARCH_TITLE = (By.XPATH, "//*[@id='content']/h1")
     EMTY_CART_DROPDOWN_ITEM = (By.XPATH, "//*[@id='cart']/ul/li/p")
     REGISTER_ACCOUNT_TITLE = (By.XPATH, "//*[@id='content']/h1")
-
+    CURRENCY_DROPDOWN_MENU_BUTTON = (By.XPATH, "//*[@id='form-currency']/div")
+    CURRENCY_DROPDOWN_ITEM_EURO = (By.NAME, "EUR")
+    CURRENCY_DROPDOWN_ITEM_POUND = (By.NAME, "GBP")
+    CURRENCY_DROPDOWN_ITEM_DOLLAR = (By.NAME, "USD")
+    CHOSEN_CURRENCY = (By.XPATH, "//*[@id='form-currency']/div/button/strong")

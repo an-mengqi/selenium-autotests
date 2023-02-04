@@ -1,3 +1,4 @@
+import pytest
 import time
 
 from page_objects.elements.SuccessAlert import SuccessAlert
@@ -36,3 +37,13 @@ def test_move_to_register_account_page(browser):
     MainPage(browser)._click_element(MainPage.ACCOUNT_DROPDOWN_MENU)
     MainPage(browser)._click_element(MainPage.REGISTER_DROPDOWN_ITEM)
     assert MainPage(browser)._get_element_attribute(MainPage.REGISTER_ACCOUNT_TITLE, "innerHTML") == "Register Account"
+
+
+@pytest.mark.parametrize("dropdown_item, currency_value", [(MainPage.CURRENCY_DROPDOWN_ITEM_EURO, "€"),
+                                                           (MainPage.CURRENCY_DROPDOWN_ITEM_POUND, "£"),
+                                                           (MainPage.CURRENCY_DROPDOWN_ITEM_DOLLAR, "$")])
+def test_check_currency(browser, dropdown_item, currency_value):
+    """Check currency change"""
+    MainPage(browser)._click_element(MainPage.CURRENCY_DROPDOWN_MENU_BUTTON)
+    MainPage(browser)._click_element(dropdown_item)
+    assert MainPage(browser)._get_element_text(MainPage.CHOSEN_CURRENCY) == currency_value

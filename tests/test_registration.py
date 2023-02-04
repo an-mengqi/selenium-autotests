@@ -45,3 +45,17 @@ def test_register_negative_do_not_agree_privacy_policy(browser):
     RegisterPage(browser)._click_element(RegisterPage.CONTINUE_BUTTON)
     assert SuccessAlert(browser)._get_element_text(SuccessAlert.REGISTER_WARNING_ALERT) ==\
            "Warning: You must agree to the Privacy Policy!"
+
+
+def test_register_user(browser):
+    """Check registration"""
+    RegisterPage(browser)._input_value(RegisterPage.FIRSTNAME_FIELD, "Alice")
+    RegisterPage(browser)._input_value(RegisterPage.LASTNAME_FIELD, "Wonderland")
+    RegisterPage(browser)._input_value(RegisterPage.EMAIL_FIELD, "alice@wonderland.land")
+    RegisterPage(browser)._input_value(RegisterPage.TELEPHONE_FIELD, "1234567")
+    RegisterPage(browser)._input_value(RegisterPage.PASSWORD_FIELD, "12345")
+    RegisterPage(browser)._input_value(RegisterPage.CONFIRM_PASSWORD_FIELD, "12345")
+    RegisterPage(browser)._click_element(RegisterPage.PRIVACY_POLICY_CHECKBOX)
+    RegisterPage(browser)._click_element(RegisterPage.CONTINUE_BUTTON)
+    assert RegisterPage(browser)._get_element_attribute(RegisterPage.REGISTER_SUCCESS_PAGE_TITLE, "innerHTML") ==\
+           "Your Account Has Been Created!"

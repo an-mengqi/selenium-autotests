@@ -13,7 +13,7 @@ class BasePage:
         try:
             return WebDriverWait(self.browser, 5).until(EC.visibility_of_element_located(locator))
         except TimeoutException:
-            raise AssertionError(f"Не дождался видимости элемента {locator}")
+            raise AssertionError(f"Did not wait for the element to be visible: {locator}")
 
     def _input_value(self, locator, value):
         """Input value in a field"""
@@ -32,3 +32,6 @@ class BasePage:
 
     def _get_element_attribute(self, locator, attribute):
         return self._find_element(locator).get_attribute(attribute)
+
+    def find_all_elements(self, locator):
+        return
