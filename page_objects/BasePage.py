@@ -15,23 +15,23 @@ class BasePage:
         except TimeoutException:
             raise AssertionError(f"Did not wait for the element to be visible: {locator}")
 
-    def _input_value(self, locator, value):
+    def input_value(self, locator, value):
         """Input value in a field"""
         self.element(locator).send_keys(value)
 
-    def _click_element(self, locator):
+    def click_element(self, locator):
         """Click on the element"""
         self.element(locator).click()
 
-    def _find_element(self, locator):
+    def find_element(self, locator):
         return self.element(locator)
 
-    def _get_element_text(self, locator):
-        element = self._find_element(locator)
+    def get_element_text(self, locator):
+        element = self.find_element(locator)
         return element.text
 
-    def _get_element_attribute(self, locator, attribute):
-        return self._find_element(locator).get_attribute(attribute)
+    def get_element_attribute(self, locator, attribute):
+        return self.find_element(locator).get_attribute(attribute)
 
     def find_all_elements(self, locator):
         return

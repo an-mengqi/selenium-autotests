@@ -13,8 +13,8 @@ class AdminPage(BasePage):
     DASHBOARD_PAGE_TITLE = (By.XPATH, "//*[@id='content']/div[1]/div/h1")
 
     def login(self, user_name, user_password):
-        self._input_value(self.USERNAME_INPUT_FIELD, user_name)
-        self._input_value(self.PASSWORD_INPUT_FIELD, user_password)
-        self._click_element(self.LOGIN_BUTTON)
+        self.input_value(self.USERNAME_INPUT_FIELD, user_name)
+        self.input_value(self.PASSWORD_INPUT_FIELD, user_password)
+        self.click_element(self.LOGIN_BUTTON)
         return self
     

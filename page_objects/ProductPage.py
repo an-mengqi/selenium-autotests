@@ -18,7 +18,7 @@ class ProductPage(BasePage):
         return res
 
     def get_specific_product_in_table(self, product):
-        table = self._find_element(self.TABLE_OF_PRODUCTS)
+        table = self.find_element(self.TABLE_OF_PRODUCTS)
         all_children_by_xpath = table.find_elements(By.XPATH, ".//tr")
 
         element_number = 1
@@ -34,7 +34,7 @@ class ProductPage(BasePage):
         return check_status
 
     def get_specific_product_xpath(self, product):
-        table = self._find_element(self.TABLE_OF_PRODUCTS)
+        table = self.find_element(self.TABLE_OF_PRODUCTS)
         all_children_by_xpath = table.find_elements(By.XPATH, ".//tr")
 
         element_number = 1
@@ -53,4 +53,4 @@ class ProductPage(BasePage):
         product_xpath = self.get_specific_product_xpath(product)
         check_box_xpath = product_xpath + "/td[1]/input"
         check_box_locator = (By.XPATH, check_box_xpath)
-        self._click_element(check_box_locator)
+        self.click_element(check_box_locator)
