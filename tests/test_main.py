@@ -1,35 +1,49 @@
+import pytest
 import time
 
-from selenium.webdriver.common.by import By
+from page_objects.elements.SuccessAlert import SuccessAlert
+from page_objects.MainPage import MainPage
 
 
 def test_search(browser):
     """Check that a title 'Search' appears after clicking to the search button"""
-    browser.find_element(By.XPATH, "//*[@id='search']/span/button").click()
-    text_search = browser.find_element(By.XPATH, "//*[@id='content']/h1")
-    assert text_search.get_attribute("innerHTML") == "Search"
+    MainPage(browser).click_element(MainPage.SEARCH_BUTTON)
+    assert MainPage(browser).get_element_attribute(MainPage.SEARCH_TITLE, "innerHTML") == "Search"
+
 
 def test_cart_empty(browser):
     """Check that the shopping cart is empty"""
-    browser.find_element(By.ID, "cart").click()
-    dropdown_menu = browser.find_element(By.XPATH, "//*[@id='cart']/ul/li/p")
-    assert dropdown_menu.get_attribute("innerHTML") == "Your shopping cart is empty!"
+    MainPage(browser).click_element(MainPage.CART_BUTTON)
+    assert MainPage(browser).get_element_attribute(MainPage.EMTY_CART_DROPDOWN_ITEM, "innerHTML") ==\
+           "Your shopping cart is empty!"
+
 
 def test_add_to_wishlist(browser):
     """Check that the alert appears after adding an item to wishist"""
-    browser.find_element(By.XPATH, "//*[@id='content']/div[2]/div[1]/div/div[3]/button[2]").click()
+    MainPage(browser).click_element(MainPage.ADD_TO_WISHLIST_BUTTON)
     time.sleep(0.3)
-    assert browser.find_element(By.XPATH, "//*[@id='common-home']/div[1]")
+    assert MainPage(browser).find_element(SuccessAlert.SUCCESS_ALERT)
+
 
 def test_my_account_dropdown_menu(browser):
     """Check that dropdown menu with buttons 'Register' and 'Login' appears"""
-    browser.find_element(By.XPATH, "//a[contains(@href,'route=account/account')]").click()
-    assert browser.find_element(By.LINK_TEXT, "Register")
-    assert browser.find_element(By.LINK_TEXT, "Login")
+    MainPage(browser).click_element(MainPage.ACCOUNT_DROPDOWN_MENU)
+    assert MainPage(browser).find_element(MainPage.REGISTER_DROPDOWN_ITEM)
+    assert MainPage(browser).find_element(MainPage.LOGIN_DROPDOWN_ITEM)
+
 
 def test_move_to_register_account_page(browser):
     """Move to a registration page"""
-    browser.find_element(By.XPATH, "//a[contains(@href,'route=account/account')]").click()
-    browser.find_element(By.LINK_TEXT, "Register").click()
-    text_register_account = browser.find_element(By.XPATH, "//*[@id='content']/h1")
-    assert text_register_account.get_attribute("innerHTML") == "Register Account"
+    MainPage(browser).click_element(MainPage.ACCOUNT_DROPDOWN_MENU)
+    MainPage(browser).click_element(MainPage.REGISTER_DROPDOWN_ITEM)
+    assert MainPage(browser).get_element_attribute(MainPage.REGISTER_ACCOUNT_TITLE, "innerHTML") == "Register Account"
+
+
+@pytest.mark.parametrize("dropdown_item, currency_value", [(MainPage.CURRENCY_DROPDOWN_ITEM_EURO, "€"),
+                                                           (MainPage.CURRENCY_DROPDOWN_ITEM_POUND, "£"),
+                                                           (MainPage.CURRENCY_DROPDOWN_ITEM_DOLLAR, "$")])
+def test_check_currency(browser, dropdown_item, currency_value):
+    """Check currency change"""
+    MainPage(browser).click_element(MainPage.CURRENCY_DROPDOWN_MENU_BUTTON)
+    MainPage(browser).click_element(dropdown_item)
+    assert MainPage(browser).get_element_text(MainPage.CHOSEN_CURRENCY) == currency_value

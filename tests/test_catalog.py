@@ -1,23 +1,22 @@
 import pytest
+import time
 
-from selenium.webdriver.common.by import By
+from page_objects.AdminPage import AdminPage
+from page_objects.CatalogPage import CatalogPage
 
 
 def test_check_menu_catalog_exists(browser):
     """Check that there is menu option 'Catalog'"""
-    browser.find_element(By.NAME, "username").send_keys("user")
-    browser.find_element(By.NAME, "password").send_keys("bitnami")
-    browser.find_element(By.XPATH, "//*[@id='content']/div/div/div/div/div[2]/form/div[3]/button/i").click()
-    menu_catalog = browser.find_element(By.ID, "menu-catalog")
-    assert menu_catalog.text == "Catalog"
+    AdminPage(browser).login("user", "bitnami")
+    assert CatalogPage(browser).get_element_text(CatalogPage.CATALOG_MENU_OPTION) == "Catalog"
+
 
 def test_expand_catalog(browser):
     """Check that menu option 'Catalog' expands"""
-    browser.find_element(By.NAME, "username").send_keys("user")
-    browser.find_element(By.NAME, "password").send_keys("bitnami")
-    browser.find_element(By.XPATH, "//*[@id='content']/div/div/div/div/div[2]/form/div[3]/button/i").click()
-    browser.find_element(By.ID, "menu-catalog").click()
-    assert browser.find_element(By.XPATH, "//*[@id='collapse1']").get_attribute("aria-expanded") == "true"
+    AdminPage(browser).login("user", "bitnami")
+    CatalogPage(browser).click_element(CatalogPage.CATALOG_MENU_OPTION)
+    assert CatalogPage(browser).get_element_attribute(CatalogPage.CATALOG_MENU_AREA, "aria-expanded") == "true"
+
 
 @pytest.mark.parametrize("link, text", [("category", "Categories"),
                                         ("product", "Products"),
@@ -32,15 +31,10 @@ def test_expand_catalog(browser):
                                         ("information", "Information")])
 def test_check_catalog_categories(browser, link, text):
     """Check Catalog categories"""
-    browser.find_element(By.NAME, "username").send_keys("user")
-    browser.find_element(By.NAME, "password").send_keys("bitnami")
-    browser.find_element(By.XPATH, "//*[@id='content']/div/div/div/div/div[2]/form/div[3]/button/i").click()
-    browser.find_element(By.ID, "menu-catalog").click()
-    if text != "Attributes" or "Attribute Groups":
-        menu_option = browser.find_element(By.XPATH, "//a[contains(@href,'route=catalog/" + link + "')]")
-        assert menu_option.get_attribute("innerHTML") == text
-    else:
-        attributes = browser.find_element(By.XPATH, "//*[@id='collapse1']/li[5]/a").click()
-        assert attributes.text == "Attributes"
-        attributes_suboptions = browser.find_element(By.XPATH, "//a[contains(@href,'route=catalog/" + link + "')]")
-        assert attributes_suboptions.get_attribute("innerHTML") == text
+    AdminPage(browser).login("user", "bitnami")
+    CatalogPage(browser).click_element(CatalogPage.CATALOG_MENU_OPTION)
+    time.sleep(0.5)
+    CatalogPage(browser).click_element(CatalogPage.ATTRIBUTES_MENU_OPTION)
+    time.sleep(0.5)
+    assert CatalogPage(browser).get_element_attribute(CatalogPage(browser).get_menu_option_xpath(link),
+                                                       "innerHTML") == text
