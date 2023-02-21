@@ -1,3 +1,5 @@
+import allure
+
 from page_objects.BasePage import BasePage
 from selenium.webdriver.common.by import By
 
@@ -13,9 +15,14 @@ class AdminPage(BasePage):
     DASHBOARD_PAGE_TITLE = (By.XPATH, "//*[@id='content']/div[1]/div/h1")
 
     def login(self, user_name, user_password):
-        self.logger.info("Login as {}".format(user_name))
-        self.input_value(self.USERNAME_INPUT_FIELD, user_name)
-        self.input_value(self.PASSWORD_INPUT_FIELD, user_password)
-        self.click_element(self.LOGIN_BUTTON)
+        self.logger.info("Login as: {}".format(user_name))
+        with allure.step(f'Ввожу логин: {user_name}'):
+            self.input_value(self.USERNAME_INPUT_FIELD, user_name)
+
+        with allure.step(f'Ввожу пароль: {user_password}'):
+            self.input_value(self.PASSWORD_INPUT_FIELD, user_password)
+
+        with allure.step("Нажимаю на кнопку Login"):
+            self.click_element(self.LOGIN_BUTTON)
         return self
     
