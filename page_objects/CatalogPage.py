@@ -11,7 +11,6 @@ class CatalogPage(BasePage):
     ADD_PRODUCT_TO_LIST_BUTTON = (By.XPATH, "//*[@id='content']/div[1]/div/div/a")
     ADD_PRODUCT_PAGE_TITLE = (By.XPATH, "//*[@id='content']/div[2]/div/div[1]/h3")
     PRODUCT_NAME_FIELD = (By.ID, "input-name1")
-    # PRODUCT_NAME_FIELD = (By.NAME, "product_description[1][name]")
     META_TAG_TITLE_FIELD = (By.NAME, "product_description[1][meta_title]")
     DATA_TAB = (By.XPATH, "//*[@id='form-product']/ul/li[2]/a")
     PRODUCT_MODEL_FIELD = (By.NAME, "model")

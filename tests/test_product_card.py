@@ -1,3 +1,4 @@
+import allure
 import pytest
 import time
 
@@ -10,12 +11,15 @@ from page_objects.elements.SuccessAlert import SuccessAlert
 def test_open_product_card_page(browser):
     """Check that 'Product List' page opens"""
     AdminPage(browser).login("user", "bitnami")
-    CatalogPage(browser).click_element(CatalogPage.CATALOG_MENU_OPTION)
+    with allure.step("Нажимаю в боковом меню на раздел Catalog"):
+        CatalogPage(browser).click_element(CatalogPage.CATALOG_MENU_OPTION)
     time.sleep(0.4)
-    CatalogPage(browser).click_element(CatalogPage.PRODUCTS_OPTION)
+    with allure.step("Перехожу на страницу Product List"):
+        CatalogPage(browser).click_element(CatalogPage.PRODUCTS_OPTION)
     assert ProductPage(browser).get_element_text(ProductPage.PRODUCT_LIST_TABLE_TITLE) == "Product List"
 
 
+@allure.step("Проверяю работу сортировки товаров в алфавитном и обратном порядке")
 def test_change_product_cards_alphabet_order(browser):
     """Check that products order changes by clicking to 'Product Name'"""
     AdminPage(browser).login("user", "bitnami")
@@ -27,6 +31,7 @@ def test_change_product_cards_alphabet_order(browser):
     assert ProductPage(browser).get_element_text(ProductPage.FIRST_PRODUCT_NAME_IN_TABLE) == "Sony VAIO"
 
 
+@allure.step("Проверяю переход на страницу редактирвания товара")
 def test_edit_product_card(browser):
     """Check redirect to 'Edit Product' page"""
     AdminPage(browser).login("user", "bitnami")
@@ -50,6 +55,7 @@ def test_negative_filter(browser, field_id):
     assert ProductPage(browser).get_element_text(ProductPage.FILTER_RESULT_TEXT) == "No results!"
 
 
+@allure.step("Проверяю добавление нового товара в таблицу")
 def test_add_product_to_list(browser):
     """Add a product to a product list"""
     AdminPage(browser).login("user", "bitnami")
@@ -74,6 +80,7 @@ def test_add_product_to_list(browser):
     assert result is True
 
 
+@allure.step("Проверяю удаление товара из таблицы")
 def test_delete_product_from_list(browser):
     """Delete a product from a product list"""
     AdminPage(browser).login("user", "bitnami")

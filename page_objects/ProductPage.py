@@ -50,6 +50,7 @@ class ProductPage(BasePage):
         return product_xpath
 
     def click_check_box(self, product):
+        self.logger.info("Check the element {} in check-box".format(product))
         product_xpath = self.get_specific_product_xpath(product)
         check_box_xpath = product_xpath + "/td[1]/input"
         check_box_locator = (By.XPATH, check_box_xpath)
