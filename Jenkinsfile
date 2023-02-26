@@ -13,12 +13,12 @@ pipeline {
       steps {
         sh 'id'
         sh 'pip -v'
-        sh 'pip install --user -r requirements.txt'
+        sh 'pip install --user -r selenium-autotests/requirements.txt'
       }
     }
     stage('test') {
       steps {
-        sh 'pytest tests/test_admin.py --url=http://192.168.0.15:8081/admin'
+        sh 'pytest selenium-autotests/tests/test_admin.py --url=http://192.168.0.15:8081/admin'
       }
     }
   }
