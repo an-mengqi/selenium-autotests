@@ -1,5 +1,5 @@
 pipeline {
-
+    agent{docker{}}
   stages {
          stage('Get Code') {
             steps {
