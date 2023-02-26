@@ -1,5 +1,6 @@
 pipeline {
     agent{
+        args '-e "HOME=/Users/anastasiiamonakhova/.jenkins/workspace/homework"'
         docker{ image 'python:3' }
     }
   stages {
@@ -11,9 +12,7 @@ pipeline {
          }
     stage('build') {
       steps {
-        withPythonEnv('python') {
         sh 'pip install --user -r selenium-autotests/requirements.txt'
-        }
       }
     }
     stage('test') {
