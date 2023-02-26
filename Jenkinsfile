@@ -9,6 +9,7 @@ pipeline {
          }
     stage('build') {
       steps {
+        sh 'pip -v'
         sh 'pip install --user -r requirements.txt'
       }
     }
