@@ -11,9 +11,9 @@ pipeline {
          }
     stage('build') {
       steps {
-        sh 'python3 -m venv venv'
-        sh 'source venv/bin/activate'
+        withPythonEnv('python') {
         sh 'pip install --user -r selenium-autotests/requirements.txt'
+        }
       }
     }
     stage('test') {
