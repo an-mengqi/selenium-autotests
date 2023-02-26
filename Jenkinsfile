@@ -18,7 +18,7 @@ pipeline {
     }
     stage('test') {
       steps {
-        sh 'pytest selenium-autotests/tests/test_admin.py --url=http://192.168.0.15:8081/admin'
+        sh 'python -m pytest selenium-autotests/tests/test_admin.py --url=http://192.168.0.15:8081/admin'
       }
     }
   }
