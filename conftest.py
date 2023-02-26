@@ -52,7 +52,8 @@ def browser(request):
     logs = request.config.getoption("--logs")
 
     logger = logging.getLogger(request.node.name)
-    file_handler = logging.FileHandler(f"logs/{request.node.name}.log")
+    # file_handler = logging.FileHandler(f"logs/{request.node.name}.log")
+    file_handler = logging.FileHandler(f"selenium-autotests/logs/{request.node.name}.log")
     file_handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
     logger.addHandler(file_handler)
     logger.setLevel(level=log_level)
