@@ -3,6 +3,7 @@ pipeline {
   stages {
          stage('Get Code') {
             steps {
+                 sh 'rm -r *'
                  sh 'git clone https://github.com/an-mengqi/selenium-autotests.git'
             }
          }
