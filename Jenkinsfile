@@ -1,7 +1,8 @@
 pipeline {
     agent{
+        docker{
         args '-e "HOME=/Users/anastasiiamonakhova/.jenkins/workspace/homework"'
-        docker{ image 'python:3' }
+        image 'python:3' }
     }
   stages {
          stage('Get Code') {
