@@ -43,3 +43,6 @@ class BasePage:
     def get_element_attribute(self, locator, attribute):
         self.logger.info("Finding attribute {} in element {}".format(attribute, locator))
         return self.find_element(locator).get_attribute(attribute)
+
+    def open(self, specific_url):
+        self.browser.get(specific_url)

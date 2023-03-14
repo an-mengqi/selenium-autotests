@@ -1,4 +1,5 @@
 import allure
+import configuration as conf
 import pytest
 import time
 
@@ -10,6 +11,8 @@ from page_objects.elements.SuccessAlert import SuccessAlert
 
 def test_open_product_card_page(browser):
     """Check that 'Product List' page opens"""
+    with allure.step("Открываю страницу /admin"):
+        AdminPage(browser).open(conf.admin_url)
     AdminPage(browser).login("user", "bitnami")
     with allure.step("Нажимаю в боковом меню на раздел Catalog"):
         CatalogPage(browser).click_element(CatalogPage.CATALOG_MENU_OPTION)
@@ -22,6 +25,7 @@ def test_open_product_card_page(browser):
 @allure.step("Проверяю работу сортировки товаров в алфавитном и обратном порядке")
 def test_change_product_cards_alphabet_order(browser):
     """Check that products order changes by clicking to 'Product Name'"""
+    AdminPage(browser).open(conf.admin_url)
     AdminPage(browser).login("user", "bitnami")
     CatalogPage(browser).click_element(CatalogPage.CATALOG_MENU_OPTION)
     time.sleep(0.4)
@@ -34,6 +38,7 @@ def test_change_product_cards_alphabet_order(browser):
 @allure.step("Проверяю переход на страницу редактирвания товара")
 def test_edit_product_card(browser):
     """Check redirect to 'Edit Product' page"""
+    AdminPage(browser).open(conf.admin_url)
     AdminPage(browser).login("user", "bitnami")
     CatalogPage(browser).click_element(CatalogPage.CATALOG_MENU_OPTION)
     time.sleep(0.4)
@@ -45,6 +50,7 @@ def test_edit_product_card(browser):
 @pytest.mark.parametrize("field_id", ["input-name", "input-model"])
 def test_negative_filter(browser, field_id):
     """Check filter work when no results were found"""
+    AdminPage(browser).open(conf.admin_url)
     AdminPage(browser).login("user", "bitnami")
     CatalogPage(browser).click_element(CatalogPage.CATALOG_MENU_OPTION)
     time.sleep(0.4)
@@ -58,6 +64,7 @@ def test_negative_filter(browser, field_id):
 @allure.step("Проверяю добавление нового товара в таблицу")
 def test_add_product_to_list(browser):
     """Add a product to a product list"""
+    AdminPage(browser).open(conf.admin_url)
     AdminPage(browser).login("user", "bitnami")
     CatalogPage(browser).click_element(CatalogPage.CATALOG_MENU_OPTION)
     time.sleep(0.4)
@@ -83,6 +90,7 @@ def test_add_product_to_list(browser):
 @allure.step("Проверяю удаление товара из таблицы")
 def test_delete_product_from_list(browser):
     """Delete a product from a product list"""
+    AdminPage(browser).open(conf.admin_url)
     AdminPage(browser).login("user", "bitnami")
     CatalogPage(browser).click_element(CatalogPage.CATALOG_MENU_OPTION)
     time.sleep(0.4)

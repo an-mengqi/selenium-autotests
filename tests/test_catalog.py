@@ -1,4 +1,5 @@
 import allure
+import configuration as conf
 import pytest
 import time
 
@@ -8,6 +9,7 @@ from page_objects.CatalogPage import CatalogPage
 
 def test_check_menu_catalog_exists(browser):
     """Check that there is menu option 'Catalog'"""
+    AdminPage(browser).open(conf.admin_url)
     AdminPage(browser).login("user", "bitnami")
     with allure.step("Проверяю в боковом меню наличие раздела Catalog"):
         assert CatalogPage(browser).get_element_text(CatalogPage.CATALOG_MENU_OPTION) == "Catalog"
@@ -15,6 +17,7 @@ def test_check_menu_catalog_exists(browser):
 
 def test_expand_catalog(browser):
     """Check that menu option 'Catalog' expands"""
+    AdminPage(browser).open(conf.admin_url)
     AdminPage(browser).login("user", "bitnami")
     with allure.step("Нажимаю в боковом меню на раздел Catalog"):
         CatalogPage(browser).click_element(CatalogPage.CATALOG_MENU_OPTION)
@@ -35,6 +38,7 @@ def test_expand_catalog(browser):
                                         ("information", "Information")])
 def test_check_catalog_categories(browser, link, text):
     """Check Catalog categories"""
+    AdminPage(browser).open(conf.admin_url)
     AdminPage(browser).login("user", "bitnami")
     with allure.step("Нажимаю в боковом меню на раздел Catalog"):
         CatalogPage(browser).click_element(CatalogPage.CATALOG_MENU_OPTION)
