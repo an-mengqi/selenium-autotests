@@ -51,6 +51,9 @@ def browser(request):
     driver.log_level = log_level
     driver.logger = logger
     driver.test_name = request.node.name
+    driver.local_url = url
+    driver.admin_url = driver.local_url + "/admin"
+    driver.registration_url = driver.local_url + "/index.php?route=account/register"
 
     def finalizer():
         driver.quit()
